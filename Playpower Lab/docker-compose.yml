@@ -3,6 +3,6 @@ services:
   app:
     build: .
     ports:
-      - "6000:6000"
+      - "3000:3000"
     env_file:
       - .env # Load environment variables from .env file

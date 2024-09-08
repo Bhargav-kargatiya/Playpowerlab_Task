@@ -20,6 +20,9 @@ export const createQuiz = asyncHandler(
     async (req, res) => {
         try {
             const { grade, Subject, TotalQuestions, MaxScore, Difficulty } = req.body;
+            if (!req.headers?.authorization) {
+                return res.status(401).json({ message: 'No token provided' });
+            }
             const token = req.headers.authorization.split(" ")[1];
 
             // Generate questions using your QuizGenerator function
@@ -88,6 +91,9 @@ export const createQuiz = asyncHandler(
 export const submitQuiz = asyncHandler(async (req, res) => {
     try {
         const { quizId, responses, email } = req.body;
+        if (!req.headers?.authorization) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
         const token = req.headers.authorization.split(" ")[1];
         // Verify token and get user info from the auth service
         const response = verifyToken(token)

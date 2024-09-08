@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Set environment variables (use .env for your secrets)
-ENV PORT=6000
+ENV PORT=3000
 
 # Expose the application port
-EXPOSE 6000
+EXPOSE 3000
 
 # Start the application
 CMD ["npm", "start"]
