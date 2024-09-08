@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { verifyToken } from "../utils/verifyToken.js";
-
+import jwt from "jsonwebtoken";
 export const login = asyncHandler(
     async (req, res) => {
         const { username, password } = req.body;
@@ -31,7 +31,7 @@ export const verifyuserToken = asyncHandler(
         if (!verifyUser) return res.status(401).json({ message: 'Token missing or invalid' });
         res.json({
             message: 'You are authorized!',
-            user: user.username,
+            user: verifyUser.username,
         });
 
     }

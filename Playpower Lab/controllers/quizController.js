@@ -169,6 +169,10 @@ export const submitQuiz = asyncHandler(async (req, res) => {
 export const getQuizHistory = asyncHandler(async (req, res) => {
     try {
         const { grade, subject, minScore, maxScore, fromDate, toDate } = req.query;
+        //check if no header toekn is provided
+        if (!req.headers?.authorization) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
         const token = req.headers.authorization.split(" ")[1];
         const response = verifyToken(token)
         const username = response.username;
@@ -177,7 +181,8 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
         // Join Submission with Quiz to apply filters on Quiz fields (grade, subject)
         const quizMatch = {};
         if (grade) {
-            quizMatch.grade = grade;
+            //convert grade to number
+            quizMatch.grade = Number(grade);
         }
         if (subject) {
             quizMatch.Subject = subject;
@@ -198,8 +203,8 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
                 query.submittedDate.$lte = new Date(toDate);
             }
         }
-        // console.log(query);
-        // console.log(quizMatch);
+        console.log(query);
+        console.log(quizMatch);
         const submissions = await Submission.find(query)
             .populate({
                 path: 'quizId',
