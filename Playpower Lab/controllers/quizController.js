@@ -87,7 +87,7 @@ export const createQuiz = asyncHandler(
 //   }
 export const submitQuiz = asyncHandler(async (req, res) => {
     try {
-        const { quizId, responses } = req.body;
+        const { quizId, responses, email } = req.body;
         const token = req.headers.authorization.split(" ")[1];
         // Verify token and get user info from the auth service
         const response = await axios.get(AUTH_SERVICE_URL, {
@@ -116,23 +116,36 @@ export const submitQuiz = asyncHandler(async (req, res) => {
 
             return {
                 questionId: response.questionId,
+                questionText: question.questionText,
                 userResponse: response.userResponse,
                 correctOption: question.correctOption,
                 isCorrect
             };
         }));
-        const submission = new Submission({
-            quizId,
-            username,
-            responses: evaluatedResponses.map(r => ({
-                questionId: r.questionId,
-                userResponse: r.userResponse
-            })),
-            score: totalScore,
-            submittedDate: new Date(),
-        });
+        // const submission = new Submission({
+        //     quizId,
+        //     username,
+        //     responses: evaluatedResponses.map(r => ({
+        //         questionId: r.questionId,
+        //         userResponse: r.userResponse
+        //     })),
+        //     score: totalScore,
+        //     submittedDate: new Date(),
+        // });
 
-        await submission.save();
+        // await submission.save();
+        console.log(email);
+
+        if (email !== undefined) {
+            const suggestionsPrompt = `
+            Based on the following performance in a quiz, provide two skill improvement suggestions:
+            Score: ${totalScore}/${MaxScore}
+            Performance: ${evaluatedResponses.map(response => `
+                Question: ${response.questionText}, Correct: ${response.isCorrect ? 'Yes' : 'No'}
+            `).join(' ')}
+        `;
+            console.log(suggestionsPrompt);
+        }
 
         // Return the evaluated score and responses
         res.status(201).json({

@@ -20,8 +20,6 @@ export const getHintForQuestion = asyncHandler(async (req, res) => {
             Correct Option: ${question.correctOption}
             (only give the hint, don't write anything else)
         `;
-
-
         const aiResponse = await HintGenerator(prompt);  // Function to call the AI
         const hint = aiResponse
         // Return the hint to the client

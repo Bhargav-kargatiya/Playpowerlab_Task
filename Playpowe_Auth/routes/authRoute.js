@@ -26,7 +26,6 @@ authRouter.get("/verify", (req, res) => {
     if (!token) return res.status(401).json({ message: 'Token missing or invalid' });
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) return res.status(403).json({ message: 'Token is invalid or expired' });
-        console.log(user);
 
         res.json({
             message: 'You are authorized!',
