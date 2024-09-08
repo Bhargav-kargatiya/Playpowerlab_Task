@@ -4,6 +4,8 @@ import axios from 'axios';
 import { QuizGenerator } from "../utils/QuizGenerator.js";
 import asyncHandler from "express-async-handler";
 import Question from "../model/Question.js";
+import { suggestionsGenerator } from "../utils/SuggestionAI.js";
+import { sendEmail } from "../utils/Sendmail.js";
 
 // {
 //     "grade": 5,
@@ -122,38 +124,46 @@ export const submitQuiz = asyncHandler(async (req, res) => {
                 isCorrect
             };
         }));
-        // const submission = new Submission({
-        //     quizId,
-        //     username,
-        //     responses: evaluatedResponses.map(r => ({
-        //         questionId: r.questionId,
-        //         userResponse: r.userResponse
-        //     })),
-        //     score: totalScore,
-        //     submittedDate: new Date(),
-        // });
+        const submission = new Submission({
+            quizId,
+            username,
+            responses: evaluatedResponses.map(r => ({
+                questionId: r.questionId,
+                userResponse: r.userResponse
+            })),
+            score: totalScore,
+            submittedDate: new Date(),
+        });
 
-        // await submission.save();
-        console.log(email);
+        await submission.save();
 
         if (email !== undefined) {
             const suggestionsPrompt = `
-            Based on the following performance in a quiz, provide two skill improvement suggestions:
+            Based on the following performance in a quiz, provide two short skill improvement suggestions in second person
+            (give entire two suggestion in one square bracket):
             Score: ${totalScore}/${MaxScore}
             Performance: ${evaluatedResponses.map(response => `
                 Question: ${response.questionText}, Correct: ${response.isCorrect ? 'Yes' : 'No'}
             `).join(' ')}
         `;
-            console.log(suggestionsPrompt);
+            const aiResponse = await suggestionsGenerator(suggestionsPrompt);
+            console.log(aiResponse);
+
+            const AIsuggestions = aiResponse?.match(/\[(.*?)\]/)[1];
+            await sendEmail(email, totalScore, MaxScore, evaluatedResponses, AIsuggestions);
+            res.status(201).json({
+                message: 'Quiz submitted and results emailed successfully',
+                totalScore,
+                evaluatedResponses
+            });
         }
-
-        // Return the evaluated score and responses
-        res.status(201).json({
-            message: 'Quiz submitted successfully',
-            totalScore,
-            evaluatedResponses
-        });
-
+        else {
+            res.status(201).json({
+                message: 'Quiz submitted successfully',
+                totalScore,
+                evaluatedResponses
+            });
+        }
     } catch (error) {
         console.error("Error submitting quiz:", error);
         res.status(500).json({ message: error.message });
