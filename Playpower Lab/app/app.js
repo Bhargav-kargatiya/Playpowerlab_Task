@@ -4,6 +4,8 @@ import quizRouter from '../routes/quizRoute.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import dbConnect from '../config/dbConnect.js';
+import authRouter from '../routes/authRoute.js';
+
 dotenv.config();
 //db connect
 dbConnect();
@@ -14,6 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+app.use('/auth', authRouter);
 app.use('/quiz', quizRouter);
 
 export default app;

@@ -6,6 +6,7 @@ import asyncHandler from "express-async-handler";
 import Question from "../model/Question.js";
 import { suggestionsGenerator } from "../utils/SuggestionAI.js";
 import { sendEmail } from "../utils/Sendmail.js";
+import { verifyToken } from "../utils/verifyToken.js";
 
 // {
 //     "grade": 5,
@@ -15,7 +16,6 @@ import { sendEmail } from "../utils/Sendmail.js";
 //     "Difficulty": "EASY|MEDIUM|HARD"
 //   }
 
-const AUTH_SERVICE_URL = process.env.URL;
 export const createQuiz = asyncHandler(
     async (req, res) => {
         try {
@@ -26,10 +26,8 @@ export const createQuiz = asyncHandler(
             const generatedQuestions = await QuizGenerator(grade, Subject, TotalQuestions, MaxScore, Difficulty);
 
             // Verify token and get user info from the auth service
-            const response = await axios.get(AUTH_SERVICE_URL, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            const username = response.data.user;
+            const response = verifyToken(token)
+            const username = response.username;
             const questionIds = [];
 
             for (const questionData of generatedQuestions) {
@@ -43,7 +41,7 @@ export const createQuiz = asyncHandler(
                 questionIds.push(question._id);
             }
 
-            const quiz = new Quiz({
+            let quiz = new Quiz({
                 grade,
                 Subject,
                 TotalQuestions,
@@ -63,7 +61,7 @@ export const createQuiz = asyncHandler(
             });
             res.status(201).json({ message: 'Quiz created successfully', quiz });
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
             res.status(500).json({ message: error.message });
         }
     }
@@ -92,10 +90,8 @@ export const submitQuiz = asyncHandler(async (req, res) => {
         const { quizId, responses, email } = req.body;
         const token = req.headers.authorization.split(" ")[1];
         // Verify token and get user info from the auth service
-        const response = await axios.get(AUTH_SERVICE_URL, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        const username = response.data.user;
+        const response = verifyToken(token)
+        const username = response.username;
 
         // Fetch the quiz by quizId
         const quiz = await Quiz.findById(quizId).populate('questions');
@@ -147,7 +143,7 @@ export const submitQuiz = asyncHandler(async (req, res) => {
             `).join(' ')}
         `;
             const aiResponse = await suggestionsGenerator(suggestionsPrompt);
-            console.log(aiResponse);
+            // console.log(aiResponse);
 
             const AIsuggestions = aiResponse?.match(/\[(.*?)\]/)[1];
             await sendEmail(email, totalScore, MaxScore, evaluatedResponses, AIsuggestions);
@@ -174,10 +170,8 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
     try {
         const { grade, subject, minScore, maxScore, fromDate, toDate } = req.query;
         const token = req.headers.authorization.split(" ")[1];
-        const verify = await axios.get(AUTH_SERVICE_URL, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        const username = verify.data.user;
+        const response = verifyToken(token)
+        const username = response.username;
         let query = { username };
 
         // Join Submission with Quiz to apply filters on Quiz fields (grade, subject)
@@ -241,7 +235,7 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
 export const getQuizbyid = asyncHandler(async (req, res) => {
     try {
         const { Quizid } = req.params;
-        console.log(req.params);
+        // console.log(req.params);
 
         const quiz = await Quiz.findById(Quizid).populate({
             path: 'questions',
