@@ -266,3 +266,62 @@ export const getQuizbyid = asyncHandler(async (req, res) => {
 });
 
 
+
+export const updateQuiz = asyncHandler(async (req, res) => {
+    try {
+        const { Quizid } = req.params;
+        const { questionText, options, correctOption } = req.body;
+        console.log(req.body);
+
+        const updatedQuiz = await Question.findByIdAndUpdate(Quizid, {
+            questionText,
+            options,
+            correctOption
+        }, {
+            new: true,
+        });
+        res.status(200).json({ message: 'Quiz updated successfully', data: updatedQuiz });
+    } catch (error) {
+        console.error("Error retrieving quiz:", error);
+        res.status(500).json({ message: error.message });
+    }
+
+});
+
+export const getQuestion = asyncHandler(async (req, res) => {
+    try {
+        let Questions = Question.find();
+        //Page
+        const page = parseInt(req.query.page) || 1;
+        //Limit
+        const limit = parseInt(req.query.limit) || 10;
+        //Start Index
+        const startIndex = (page - 1) * limit;
+        //End Index
+        const endIndex = page * limit;
+        const total = await Question.countDocuments();
+        Questions = await Questions.skip(startIndex).limit(limit);
+
+        const pagination = {}
+        if (endIndex < total) {
+            pagination.next = {
+                page: page + 1,
+                limit,
+            }
+        }
+        if (startIndex > 0) {
+            pagination.prev = {
+                page: page - 1,
+                limit
+            }
+        }
+
+
+        res.status(200).json({ message: 'Questipon retrieved successfully', pagination, data: Questions });
+    } catch (error) {
+        console.error("Error retrieving quiz:", error);
+        res.status(500).json({ message: error.message });
+    }
+
+});
+

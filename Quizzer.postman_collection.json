@@ -1,0 +1,403 @@
+{
+	"info": {
+		"_postman_id": "b40028b3-ad09-43fb-a6a2-d7cc6f833665",
+		"name": "Quizzer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36171887"
+	},
+	"item": [
+		{
+			"name": "Auth Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"priyankpatel9413@gmail.com\",\n    \"password\": \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/user/auth",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"user",
+						"auth"
+					]
+				},
+				"description": "- Mock Authentication Point - Accepts any valid emails.\n    \n- If You use your email for authentication, then After quiz subimision, you will recieves email with suggestions.\n    \n- Can throw exception in case of wrong email formate\n    \n\n### **Response**:\n\n``` json\neyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTc5NDA1MCwiZXhwIjoxNzI1Nzk1ODUwfQ.qlQUUrt8-nVVLWulpPH0LeJ4brH4t1PG2At_h2v3AwA\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Quiz",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grade\": 5,\n    \"subject\": \"Science\",\n    \"totalQuestions\": 5,\n    \"maxScore\": 5,\n    \"difficulty\": \"HARD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/create",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"create"
+					]
+				},
+				"description": "- Needs valid JWT token to generate quiz.\n    \n\n### **Response:**\n\n``` json\n{\n    \"quizId\": \"410a7ad5-2bbd-47d4-a107-3184355452a8\",\n    \"grade\": 10,\n    \"subject\": \"Science\",\n    \"totalQuestions\": 5.0,\n    \"maxScore\": 5.0,\n    \"difficulty\": \"HARD\",\n    \"createdOn\": 1725792601768,\n    \"questions\": [\n        {\n            \"questionId\": \"23c13c7c-6989-48e5-80f2-55414a6b0db7\",\n            \"questionText\": \"What is the process by which water moves through a plant, from the roots to the leaves, and is then released into the air as water vapor?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Respiration\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Photosynthesis\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Transpiration\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Osmosis\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"1c70eca6-b615-4936-9810-e93062663d42\",\n            \"questionText\": \"Which of the following types of rocks is formed from the cooling and solidification of magma or lava?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Igneous\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Sedimentary\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Metamorphic\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Foliated\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"66c42e1d-8c1a-43c0-bcf1-f4cd86e5a41d\",\n            \"questionText\": \"What is the term for the ability of an object to resist changes in its motion?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Inertia\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Momentum\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Friction\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Gravity\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"69e5f2d9-790a-45c6-8dbd-2ee3f53a3e01\",\n            \"questionText\": \"Which of the following scientists is credited with the discovery of the theory of evolution through natural selection?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Charles Darwin\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Gregor Mendel\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Albert Einstein\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Louis Pasteur\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"d9a1a840-47c6-4a29-9d6e-aa35142d4c48\",\n            \"questionText\": \"What is the term for the process by which an organism's genetic information is passed from one generation to the next?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Heritability\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Heredity\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Genetic drift\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Mutation\"\n                }\n            ]\n        }\n    ]\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Quiz",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/getByQuizId?quizId=35a25cae-731d-459d-940e-c71f05faccbf",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"getByQuizId"
+					],
+					"query": [
+						{
+							"key": "quizId",
+							"value": "35a25cae-731d-459d-940e-c71f05faccbf"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- provide quizId in query parameter\n    \n\n### Response:\n\n``` json\n{\n    \"quizId\": \"410a7ad5-2bbd-47d4-a107-3184355452a8\",\n    \"grade\": 10,\n    \"subject\": \"Science\",\n    \"totalQuestions\": 5.0,\n    \"maxScore\": 5.0,\n    \"difficulty\": \"HARD\",\n    \"createdOn\": 1725792601768,\n    \"questions\": [\n        {\n            \"questionId\": \"23c13c7c-6989-48e5-80f2-55414a6b0db7\",\n            \"questionText\": \"What is the process by which water moves through a plant, from the roots to the leaves, and is then released into the air as water vapor?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Respiration\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Photosynthesis\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Transpiration\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Osmosis\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"1c70eca6-b615-4936-9810-e93062663d42\",\n            \"questionText\": \"Which of the following types of rocks is formed from the cooling and solidification of magma or lava?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Igneous\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Sedimentary\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Metamorphic\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Foliated\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"66c42e1d-8c1a-43c0-bcf1-f4cd86e5a41d\",\n            \"questionText\": \"What is the term for the ability of an object to resist changes in its motion?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Inertia\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Momentum\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Friction\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Gravity\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"69e5f2d9-790a-45c6-8dbd-2ee3f53a3e01\",\n            \"questionText\": \"Which of the following scientists is credited with the discovery of the theory of evolution through natural selection?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Charles Darwin\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Gregor Mendel\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Albert Einstein\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Louis Pasteur\"\n                }\n            ]\n        },\n        {\n            \"questionId\": \"d9a1a840-47c6-4a29-9d6e-aa35142d4c48\",\n            \"questionText\": \"What is the term for the process by which an organism's genetic information is passed from one generation to the next?\",\n            \"options\": [\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"A\",\n                    \"optionText\": \"Heritability\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"B\",\n                    \"optionText\": \"Heredity\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"C\",\n                    \"optionText\": \"Genetic drift\"\n                },\n                {\n                    \"uniqueOptionId\": null,\n                    \"optionId\": \"D\",\n                    \"optionText\": \"Mutation\"\n                }\n            ]\n        }\n    ]\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Quiz Response",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quizId\": \"35a25cae-731d-459d-940e-c71f05faccbf\",\n    \"answers\": [\n        {\n            \"questionId\": \"841d9a36-232e-4703-987e-a0f3e63680c2\",\n            \"answer\": \"C\"\n        },\n        {\n            \"questionId\": \"7f1132fc-7761-4aa1-9460-a3927f36a64e\",\n            \"answer\": \"B\"\n        },\n        {\n            \"questionId\": \"1d567c85-cc29-4179-b2ed-3a3ae372530d\",\n            \"answer\": \"B\"\n        },\n        {\n            \"questionId\": \"65e2573b-6d1c-4866-9fb1-4a240b8a84a2\",\n            \"answer\": \"C\"\n        },\n        {\n            \"questionId\": \"9d173c08-a230-4593-9f16-759f4b7b2a1d\",\n            \"answer\": \"B\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/submit",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"submit"
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n\n### Response:\n\n``` json\n{\n    \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n    \"userId\": \"ffb6501c-0945-4d9d-8c9e-d80c4d3ad8c7\",\n    \"quizId\": \"410a7ad5-2bbd-47d4-a107-3184355452a8\",\n    \"grade\": 40.0,\n    \"marks\": 2.0,\n    \"submitedOn\": 1725792722491\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get By GradeGreater",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/byGrade?grade=20",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"byGrade"
+					],
+					"query": [
+						{
+							"key": "grade",
+							"value": "20"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- Provide grade between 0 to 100 in query parameter\n    \n\n### Response:\n\n``` json\n[\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n            \"userId\": \"17423d30-c906-4af6-8227-5641087ee45a\",\n            \"quizId\": \"ba73911e-5f1c-4b10-971a-09bd08db85bc\",\n            \"grade\": 100.0,\n            \"marks\": 5.0,\n            \"submitedOn\": null\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"6360c396-163e-4579-b9fb-855961dd8452\",\n                \"questionId\": \"2763eb80-7aa8-4c8f-86a5-a3760802ace8\",\n                \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"1ff8dc75-d127-408f-8cb3-fcfac194c34b\",\n                \"questionId\": \"06f31766-ce32-4571-8f5a-3773dedb89fc\",\n                \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n                \"response\": \"A\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"3b055f85-29d0-4ed9-97d8-75c1332475ee\",\n                \"questionId\": \"e054b0a1-cc31-4d23-b20a-fff5cda7bf10\",\n                \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n                \"response\": \"B\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"7af87d5a-b523-4c52-84b6-755914565ad3\",\n                \"questionId\": \"b9660ecc-39f3-40ab-8df2-84cc8645ec00\",\n                \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"b2faa232-6cf7-4cb8-82ef-a3ab6cd8272d\",\n                \"questionId\": \"f7d7efdc-934b-43ad-b6da-fa46781e19c9\",\n                \"submisionId\": \"78261a8a-135f-4cb1-8c5a-a7644b9f59b6\",\n                \"response\": \"B\",\n                \"correct\": true\n            }\n        ]\n    },\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n            \"userId\": \"17423d30-c906-4af6-8227-5641087ee45a\",\n            \"quizId\": \"ba73911e-5f1c-4b10-971a-09bd08db85bc\",\n            \"grade\": 80.0,\n            \"marks\": 4.0,\n            \"submitedOn\": 1725775725500\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"2e1d0b04-0ab0-4915-b632-2884f55e64d7\",\n                \"questionId\": \"2763eb80-7aa8-4c8f-86a5-a3760802ace8\",\n                \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n                \"response\": \"D\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"26d5fdf5-37c4-4d2e-9e3c-98c9f75b0960\",\n                \"questionId\": \"06f31766-ce32-4571-8f5a-3773dedb89fc\",\n                \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n                \"response\": \"A\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"0b54acf4-dea9-4fec-928b-b89532f20cd8\",\n                \"questionId\": \"e054b0a1-cc31-4d23-b20a-fff5cda7bf10\",\n                \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n                \"response\": \"B\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"800e81d5-55cc-4429-9f1e-03a5d0469482\",\n                \"questionId\": \"b9660ecc-39f3-40ab-8df2-84cc8645ec00\",\n                \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"174c9410-716e-4a66-9751-2e3118bbe122\",\n                \"questionId\": \"f7d7efdc-934b-43ad-b6da-fa46781e19c9\",\n                \"submisionId\": \"1c2fdd4c-1f52-4928-b4d7-b7c2b61867bc\",\n                \"response\": \"B\",\n                \"correct\": true\n            }\n        ]\n    }\n]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Subject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/bySubject?subject=Science",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"bySubject"
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "Science"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- Provide subject name in query parameter\n    \n\n### Response:\n\n``` json\n[\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n            \"userId\": \"db34d923-3150-4b96-98c8-3db7945e81f0\",\n            \"quizId\": \"52e0f2e3-bcbe-453e-8f7d-04c68ab63294\",\n            \"grade\": 40.0,\n            \"marks\": 2.0,\n            \"submitedOn\": 1725781909060\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"442b59ba-74aa-49ee-b988-932a7665c6a1\",\n                \"questionId\": \"b9720e44-b330-4f77-b9b7-024d24ddf875\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"D\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"4033a5bf-2871-4d18-8ad7-cc7e9352506c\",\n                \"questionId\": \"7910b0b2-537d-40e1-b58d-4e8d83847fcc\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"A\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"98340b65-9a5c-4802-9029-f63251b9d1a9\",\n                \"questionId\": \"24d8dafa-a7c4-4a67-88cf-b6a0d89531bf\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"8f643535-49cc-4341-9dcb-0f3c62c18799\",\n                \"questionId\": \"fbcdeff4-7871-43b4-a995-e8aa16cd6ef9\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"f10f9d53-1024-419f-9b37-03b560576170\",\n                \"questionId\": \"11d7663d-a6e2-477e-a71e-31d91bbe3133\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"B\",\n                \"correct\": false\n            }\n        ]\n    }\n]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Compleated On",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"currentDate\", new Date().toISOString());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/byCompletedDate?completedDate=Sun Sep 09  2024",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"byCompletedDate"
+					],
+					"query": [
+						{
+							"key": "completedDate",
+							"value": "Sun Sep 09  2024"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- Provide date in query parameter\n    \n- Date formate: \"Sun Sep 08 2024\"\n    \n\n### Response:\n\n``` json\n[\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n            \"userId\": \"ffb6501c-0945-4d9d-8c9e-d80c4d3ad8c7\",\n            \"quizId\": \"410a7ad5-2bbd-47d4-a107-3184355452a8\",\n            \"grade\": 40.0,\n            \"marks\": 2.0,\n            \"submitedOn\": 1725792722491\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"87720649-af2c-4782-9093-83773dc9d999\",\n                \"questionId\": \"23c13c7c-6989-48e5-80f2-55414a6b0db7\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"2db7f16a-ae72-4d89-b60b-3a71d0a714fa\",\n                \"questionId\": \"1c70eca6-b615-4936-9810-e93062663d42\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"3814357a-7119-47dd-98a8-a45d491717b0\",\n                \"questionId\": \"66c42e1d-8c1a-43c0-bcf1-f4cd86e5a41d\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"fec11917-1959-4412-87d4-8f324cd29e7d\",\n                \"questionId\": \"69e5f2d9-790a-45c6-8dbd-2ee3f53a3e01\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"C\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"6b18096c-c7c1-44ee-8212-67e73a95ca2d\",\n                \"questionId\": \"d9a1a840-47c6-4a29-9d6e-aa35142d4c48\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": true\n            }\n        ]\n    }\n]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get By User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/byUser",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"byUser"
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- No need of any parameter. Current user will be taken from the Spring Securite context\n    \n\n### Response:\n\n``` json\n[\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n            \"userId\": \"db34d923-3150-4b96-98c8-3db7945e81f0\",\n            \"quizId\": \"52e0f2e3-bcbe-453e-8f7d-04c68ab63294\",\n            \"grade\": 40.0,\n            \"marks\": 2.0,\n            \"submitedOn\": 1725781909060\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"442b59ba-74aa-49ee-b988-932a7665c6a1\",\n                \"questionId\": \"b9720e44-b330-4f77-b9b7-024d24ddf875\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"D\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"4033a5bf-2871-4d18-8ad7-cc7e9352506c\",\n                \"questionId\": \"7910b0b2-537d-40e1-b58d-4e8d83847fcc\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"A\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"98340b65-9a5c-4802-9029-f63251b9d1a9\",\n                \"questionId\": \"24d8dafa-a7c4-4a67-88cf-b6a0d89531bf\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"8f643535-49cc-4341-9dcb-0f3c62c18799\",\n                \"questionId\": \"fbcdeff4-7871-43b4-a995-e8aa16cd6ef9\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"f10f9d53-1024-419f-9b37-03b560576170\",\n                \"questionId\": \"11d7663d-a6e2-477e-a71e-31d91bbe3133\",\n                \"submisionId\": \"3cc95c0b-5f67-458f-aea6-2a8de7c7e6c7\",\n                \"response\": \"B\",\n                \"correct\": false\n            }\n        ]\n    },\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n            \"userId\": \"db34d923-3150-4b96-98c8-3db7945e81f0\",\n            \"quizId\": \"52e0f2e3-bcbe-453e-8f7d-04c68ab63294\",\n            \"grade\": 20.0,\n            \"marks\": 1.0,\n            \"submitedOn\": 1725782673891\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"9db36000-ed1b-49ad-af2a-0e3b6830773f\",\n                \"questionId\": \"b9720e44-b330-4f77-b9b7-024d24ddf875\",\n                \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n                \"response\": \"C\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"1ed61e2a-5576-44fc-a67f-d43126cf5433\",\n                \"questionId\": \"7910b0b2-537d-40e1-b58d-4e8d83847fcc\",\n                \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"8c4c5184-a1f0-4b61-8bba-ff93b508f56f\",\n                \"questionId\": \"24d8dafa-a7c4-4a67-88cf-b6a0d89531bf\",\n                \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"019e608a-36a6-4b38-9757-9d1ea9ad79ba\",\n                \"questionId\": \"fbcdeff4-7871-43b4-a995-e8aa16cd6ef9\",\n                \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"336d9ccf-a782-444e-8cb4-ebe8a43f5956\",\n                \"questionId\": \"11d7663d-a6e2-477e-a71e-31d91bbe3133\",\n                \"submisionId\": \"0c93312c-67fd-485e-9b49-8fcf9118318d\",\n                \"response\": \"B\",\n                \"correct\": false\n            }\n        ]\n    }\n]\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Hint",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/hint?quizId=35a25cae-731d-459d-940e-c71f05faccbf&questionId=841d9a36-232e-4703-987e-a0f3e63680c2",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"hint"
+					],
+					"query": [
+						{
+							"key": "quizId",
+							"value": "35a25cae-731d-459d-940e-c71f05faccbf"
+						},
+						{
+							"key": "questionId",
+							"value": "841d9a36-232e-4703-987e-a0f3e63680c2"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- Provide quizID and QuestionID in query parameter\n    \n\n### Response:\n\n``` json\n{\n    \"questionId\": \"80e045f1-c55f-44a7-89db-94d95aa16c24\",\n    \"question\": \"If f(x) = 2x^3 - 5x^2 + 3x - 1, what is the value of f'(1)?\",\n    \"quizId\": \"6e29b350-6e16-4c4e-b649-e08a6957502b\",\n    \"hint\": \"Remember the power rule of differentiation!\"\n}\n\n ```"
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Date Between",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcml5YW5rcGF0ZWw5NDEzQGdtYWlsLmNvbSIsImlhdCI6MTcyNTg2NzUyMywiZXhwIjoxNzI1ODY5MzIzfQ.venRR8f16nhlLUQOzZ4sMTglalQ2fmrlfjS331ZkKLU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://quizzer-render-1-1-1.onrender.com/quiz/byCompletedDateRange?startDate=Sun Sep 08  2024&endDate=Tue Sep 10  2024",
+					"protocol": "https",
+					"host": [
+						"quizzer-render-1-1-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"quiz",
+						"byCompletedDateRange"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "Sun Sep 08  2024"
+						},
+						{
+							"key": "endDate",
+							"value": "Tue Sep 10  2024"
+						}
+					]
+				},
+				"description": "- Needs valid JWT token\n    \n- Provide startDate and endDate in query parameter\n    \n- Date formate: \"Sun Sep 08 2024\"\n    \n\n### Response:\n\n``` json\n[\n    {\n        \"userSubmision\": {\n            \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n            \"userId\": \"ffb6501c-0945-4d9d-8c9e-d80c4d3ad8c7\",\n            \"quizId\": \"410a7ad5-2bbd-47d4-a107-3184355452a8\",\n            \"grade\": 40.0,\n            \"marks\": 2.0,\n            \"submitedOn\": 1725792722491\n        },\n        \"userResponses\": [\n            {\n                \"questionResponseId\": \"87720649-af2c-4782-9093-83773dc9d999\",\n                \"questionId\": \"23c13c7c-6989-48e5-80f2-55414a6b0db7\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"C\",\n                \"correct\": true\n            },\n            {\n                \"questionResponseId\": \"2db7f16a-ae72-4d89-b60b-3a71d0a714fa\",\n                \"questionId\": \"1c70eca6-b615-4936-9810-e93062663d42\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"3814357a-7119-47dd-98a8-a45d491717b0\",\n                \"questionId\": \"66c42e1d-8c1a-43c0-bcf1-f4cd86e5a41d\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"fec11917-1959-4412-87d4-8f324cd29e7d\",\n                \"questionId\": \"69e5f2d9-790a-45c6-8dbd-2ee3f53a3e01\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"C\",\n                \"correct\": false\n            },\n            {\n                \"questionResponseId\": \"6b18096c-c7c1-44ee-8212-67e73a95ca2d\",\n                \"questionId\": \"d9a1a840-47c6-4a29-9d6e-aa35142d4c48\",\n                \"submisionId\": \"62023886-2254-4412-aa78-2242455f1c09\",\n                \"response\": \"B\",\n                \"correct\": true\n            }\n        ]\n    }\n]\n\n ```"
+			},
+			"response": []
+		}
+	]
+}
