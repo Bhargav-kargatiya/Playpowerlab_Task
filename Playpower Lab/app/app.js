@@ -7,6 +7,9 @@ import dbConnect from '../config/dbConnect.js';
 import authRouter from '../routes/authRoute.js';
 import path from 'path';
 import { fileURLToPath } from 'url'; // Import fileURLToPath
+import { Redis } from "ioredis";
+
+export const Client = new Redis();
 
 dotenv.config();
 //db connect

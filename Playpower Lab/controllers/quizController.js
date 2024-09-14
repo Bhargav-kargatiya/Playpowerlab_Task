@@ -30,6 +30,9 @@ export const createQuiz = asyncHandler(
 
             // Verify token and get user info from the auth service
             const response = verifyToken(token)
+            if (!response) {
+                return res.status(401).json({ message: 'Invalid token' });
+            }
             const username = response.username;
             const questionIds = [];
 
@@ -97,6 +100,9 @@ export const submitQuiz = asyncHandler(async (req, res) => {
         const token = req.headers.authorization.split(" ")[1];
         // Verify token and get user info from the auth service
         const response = verifyToken(token)
+        if (!response) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
         const username = response.username;
 
         // Fetch the quiz by quizId
@@ -181,6 +187,9 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
         }
         const token = req.headers.authorization.split(" ")[1];
         const response = verifyToken(token)
+        if (!response) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
         const username = response.username;
         let query = { username };
 
