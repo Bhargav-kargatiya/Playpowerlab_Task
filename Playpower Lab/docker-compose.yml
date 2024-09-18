@@ -1,8 +1,28 @@
-version: '3'
+version: '3.8'
 services:
   app:
-    build: .
+    build: . # Builds the Docker image from the Dockerfile in the current directory
+    image: bhargav2003/quiz-app-api:v1.2 # Specifies the name and tag (version) of the image
+    container_name: quiz_app_api
     ports:
       - "3000:3000"
     env_file:
-      - .env # Load environment variables from .env file
+      - .env # Load environment variables from .env file  
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis/redis-stack"
+    container_name: my_redis
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+    driver: local

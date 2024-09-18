@@ -9,7 +9,15 @@ import path from 'path';
 import { fileURLToPath } from 'url'; // Import fileURLToPath
 import { Redis } from "ioredis";
 
-export const Client = new Redis();
+// Use environment variables for Redis connection
+const redisHost = process.env.REDIS_HOST || 'localhost';
+const redisPort = process.env.REDIS_PORT || 6379;
+
+export const Client = new Redis({
+    host: redisHost,
+    port: redisPort,
+});
+
 
 dotenv.config();
 //db connect

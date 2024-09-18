@@ -7,6 +7,8 @@ import Question from "../model/Question.js";
 import { suggestionsGenerator } from "../utils/SuggestionAI.js";
 import { sendEmail } from "../utils/Sendmail.js";
 import { verifyToken } from "../utils/verifyToken.js";
+import generateCacheKey from "../utils/GenerateCashkey.js";
+import { Client } from "../app/app.js";
 
 // {
 //     "grade": 5,
@@ -192,23 +194,20 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
         }
         const username = response.username;
         let query = { username };
-
+        const cacheKey = generateCacheKey(username, { grade, subject, minScore, maxScore, fromDate, toDate });
+        const cachedData = await Client.get(cacheKey);
+        if (cachedData) {
+            return res.status(200).json({
+                message: 'Quiz history retrieved from cache successfully',
+                data: JSON.parse(cachedData),
+            });
+        }
         // Join Submission with Quiz to apply filters on Quiz fields (grade, subject)
         const quizMatch = {};
-        if (grade) {
-            //convert grade to number
-            quizMatch.grade = Number(grade);
-        }
-        if (subject) {
-            quizMatch.Subject = subject;
-        }
-
-        if (minScore) {
-            query.score = { ...query.score, $gte: Number(minScore) };
-        }
-        if (maxScore) {
-            query.score = { ...query.score, $lte: Number(maxScore) };
-        }
+        if (grade) { quizMatch.grade = Number(grade); }
+        if (subject) { quizMatch.Subject = subject; }
+        if (minScore) { query.score = { ...query.score, $gte: Number(minScore) }; }
+        if (maxScore) { query.score = { ...query.score, $lte: Number(maxScore) }; }
         if (fromDate || toDate) {
             query.submittedDate = {};
             if (fromDate) {
@@ -218,8 +217,8 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
                 query.submittedDate.$lte = new Date(toDate);
             }
         }
-        console.log(query);
-        console.log(quizMatch);
+        // console.log(query);
+        // console.log(quizMatch);
         const submissions = await Submission.find(query)
             .populate({
                 path: 'quizId',
@@ -235,7 +234,8 @@ export const getQuizHistory = asyncHandler(async (req, res) => {
 
         // Filter out any submissions where quizId is null (because of mismatching quiz filters)
         const filteredSubmissions = submissions.filter(sub => sub.quizId !== null);
-
+        // Cache the filtered submissions
+        await Client.set(cacheKey, JSON.stringify(filteredSubmissions), 'EX', 60 * 60 * 24);
         if (filteredSubmissions.length !== 0) {
             res.status(200).json({
                 message: 'Quiz history retrieved successfully',
@@ -256,7 +256,12 @@ export const getQuizbyid = asyncHandler(async (req, res) => {
     try {
         const { Quizid } = req.params;
         // console.log(req.params);
-
+        //cache the quiz
+        const cacheKey = `quiz:${Quizid}`;
+        const cachedData = await Client.get(cacheKey);
+        if (cachedData) {
+            return res.status(200).json({ message: 'Quiz retrieved from cache successfully', data: JSON.parse(cachedData) });
+        }
         const quiz = await Quiz.findById(Quizid).populate({
             path: 'questions',
             model: 'Question',
@@ -265,7 +270,7 @@ export const getQuizbyid = asyncHandler(async (req, res) => {
         if (!quiz) {
             return res.status(404).json({ message: "Quiz not found" });
         }
-
+        await Client.set(cacheKey, JSON.stringify(quiz), 'EX', 60 * 60 * 24);
         res.status(200).json({ message: 'Quiz retrieved successfully', data: quiz });
     } catch (error) {
         console.error("Error retrieving quiz:", error);
@@ -278,6 +283,15 @@ export const getQuizbyid = asyncHandler(async (req, res) => {
 
 export const updateQuiz = asyncHandler(async (req, res) => {
     try {
+        if (!req.headers?.authorization) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+        const token = req.headers.authorization.split(" ")[1];
+        const response = verifyToken(token)
+        if (!response) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+        const username = response.username;
         const { Quizid } = req.params;
         const { questionText, options, correctOption } = req.body;
         console.log(req.body);
@@ -299,7 +313,7 @@ export const updateQuiz = asyncHandler(async (req, res) => {
 
 export const getQuestion = asyncHandler(async (req, res) => {
     try {
-        let Questions = Question.find();
+
         //Page
         const page = parseInt(req.query.page) || 1;
         //Limit
@@ -308,9 +322,9 @@ export const getQuestion = asyncHandler(async (req, res) => {
         const startIndex = (page - 1) * limit;
         //End Index
         const endIndex = page * limit;
+        const cacheKey = `questions:${page}:${limit}`;
+        const cachedData = await Client.get(cacheKey);
         const total = await Question.countDocuments();
-        Questions = await Questions.skip(startIndex).limit(limit);
-
         const pagination = {}
         if (endIndex < total) {
             pagination.next = {
@@ -324,6 +338,13 @@ export const getQuestion = asyncHandler(async (req, res) => {
                 limit
             }
         }
+        if (cachedData) {
+            return res.status(200).json({ message: 'Questions retrieved from cache successfully', pagination, data: JSON.parse(cachedData) });
+        }
+        let Questions = Question.find();
+        Questions = await Questions.skip(startIndex).limit(limit);
+        await Client.set(cacheKey, JSON.stringify(Questions), 'EX', 60 * 60 * 24);
+
 
 
         res.status(200).json({ message: 'Questipon retrieved successfully', pagination, data: Questions });
